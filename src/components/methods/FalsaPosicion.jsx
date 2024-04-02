@@ -28,7 +28,6 @@ const FalsaPosicion = ({ func }) => {
     }
   }
   return (
-
     <div className="w-full flex flex-col">
       <h2 className='text-center text-sky-950 text-4xl '>Falsa Posicion</h2>
       <form onSubmit={handleSubmit} className={'flex flex-col gap-2 mt-5'}>
