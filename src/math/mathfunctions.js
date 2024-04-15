@@ -137,41 +137,39 @@ export const newtonRaphson = (y, derivada, x0, error) => {
 }
 
 
-export const secanteTabla = (y, x0, x1, error) => {
+export const secanteTabla = (y, x0, x1) => {
+  y = math.compile(y)
   let tabla = [];
-  let i = 2;
-  let fx0 = y(x0);
-  let fx1 = y(x1);
-  let x2 = x1 - (fx1 * (x1 - x0)) / (fx1 - fx0);
-  let fx2 = y(x2);
-  let errorCalculado = Math.abs(x2 - x1);
+  let i = 0;
+  let fxi = y.evaluate({x: x1});
+  let fxiuno = y.evaluate({x: x0});
+  let x2 = x1 - (fxi * (x0 - x1)) / (fxiuno - fxi);
+  let errorCalculado = (x2 - x1)/x2*100;
   tabla.push({
     i,
     x0,
     x1,
-    fx0,
-    fx1,
+    fxi,
+    fxiuno,
     x2,
-    fx2,
     errorCalculado
   });
-  while (errorCalculado > error) {
+  while (errorCalculado < -0.01 ) {
     i++;
-    x0 = x1;
+    let aux = x1;
     x1 = x2;
-    fx0 = y(x0);
-    fx1 = y(x1);
-    x2 = x1 - (fx1 * (x1 - x0)) / (fx1 - fx0);
-    fx2 = y(x2);
-    errorCalculado = Math.abs(x2 - x1);
+    x0 = aux;
+    fxi = y.evaluate({x: x1});
+    fxiuno = y.evaluate({x: x0});
+    x2 = x1 - (fxi * (x0 - x1)) / (fxiuno - fxi);
+    errorCalculado = (x2 - x1)/x2*100;
     tabla.push({
       i,
       x0,
       x1,
-      fx0,
-      fx1,
+      fxi,
+      fxiuno,
       x2,
-      fx2,
       errorCalculado
     });
   }
